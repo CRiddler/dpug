@@ -51,7 +51,7 @@ jobs:
     #   without too much worry
     - name: Publish gh-pages
       uses: peaceiris/actions-gh-pages@v3
-      if: ${{ (github.event_name == 'push') && (github.ref == 'refs/heads/main') && github.repository == 'criddler' }}
+      if: ${{ (github.event_name == 'push') && github.repository_owner == 'criddler' }}
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_branch: gh-pages
@@ -60,7 +60,7 @@ jobs:
     # On push to main: push participant build folder to branch
     - name: Push participant branch
       uses: s0/git-publish-subdir-action@develop
-      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'criddler' }}
+      if: ${{ github.event_name == 'push' && github.repository_owner == 'criddler' }}
       env:
         REPO: self
         BRANCH: participant
