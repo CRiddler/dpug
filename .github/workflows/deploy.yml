@@ -34,8 +34,15 @@ jobs:
         environment-file: environment-dev.yml
         use-only-tar-bz2: true
 
+    - name: log environment
+      shell: bash -l {0}
+      run: |
+        conda info
+        conda list
+
     # Runs the Makefile at respository base directory (dpug/Makefile)
     - name: Build notebooks & html
+      shell: bash -l {0}
       run: make -j8 all
     
     # On push to main: publish built site to gh-pages branch
