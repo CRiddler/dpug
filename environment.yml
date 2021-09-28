@@ -1,0 +1,10 @@
+# This file is auto-generated from environment-dev.yml
+name: dpug
+channels:
+- conda-forge
+dependencies:
+- python=3.8.*
+- jupyter=1.0.0
+- ipykernel=6.4.1
+- nbconvert=5.6.1
+- notebook=6.4.4
