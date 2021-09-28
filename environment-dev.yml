@@ -14,11 +14,10 @@ dependencies:
   # generating 'environment.yml' (see scripts/generate_env_from_dev.py)
   # for participant envrironment
 
-  # Needed to convert notebooks to & enable jupytext
   - pydata-sphinx-theme=0.6.3
-  # - sphinx-inline-tabs=2021.8.17b10  # Requires python>=3.8, but dependency isn't configured correctly.
   - jupytext=1.13.0
   - jupyter_client=6.1.12
+  - pandoc=2.14.2
   - rise=5.7.1
   - pyyaml=5.4.1
 
