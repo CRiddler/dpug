@@ -27,7 +27,7 @@ jobs:
         key:
           ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{
           hashFiles('environment-dev.yml') }}
-    - uses: ./conda_pkgs_dir
+    - uses: ./
       with:
         activate-environment: dpug-dev
         channel-priority: strict
