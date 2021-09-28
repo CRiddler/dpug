@@ -1,0 +1,36 @@
+name: dpug-dev
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8.*
+  - jupyter=1.0.0
+
+  # Jupyter set up
+  - ipykernel=6.4.1
+  - nbconvert=5.6.1
+  - notebook=6.4.4
+
+  ## Developer packages, packages below this comment will be ignored when
+  # generating 'environment.yml' (see scripts/generate_env_from_dev.py)
+  # for participant envrironment
+
+  # Needed to convert notebooks to & enable jupytext
+  - pydata-sphinx-theme=0.6.3
+  # - sphinx-inline-tabs=2021.8.17b10  # Requires python>=3.8, but dependency isn't configured correctly.
+  - jupytext=1.13.0
+  - jupyter_client=6.1.12
+  - rise=5.7.1
+  - pyyaml=5.4.1
+
+  # sphinx extensions
+  - myst-parser=0.15.2
+  - nbsphinx=0.8.7
+  - sphinx-panels=0.6.0
+  - sphinx-copybutton=0.4.0
+  - sphinx-external-toc=0.2.3
+  - sphinx-togglebutton=0.2.3
+
+  # Code maintenance
+  - black=21.9b0
+  - flake8
+  - pre-commit>=2.9.2

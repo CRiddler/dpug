@@ -1,0 +1,62 @@
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  # Builds ipynb & html files. Then pushes to appropriate branches
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    # Checks-out the main branch
+    - uses: actions/checkout@v2
+
+    # Install python 3.8; then set up build environment
+    - name: Cache conda
+      uses: actions/cache@v1
+      env:
+        # Increase this value to reset cache if etc/example-environment.yml has not changed
+        CACHE_NUMBER: 0
+      with:
+        path: ~/conda_pkgs_dir
+        key:
+          ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{
+          hashFiles('environment-dev.yml') }}
+    - uses: ./conda_pkgs_dir
+      with:
+        activate-environment: dpug-dev
+        channel-priority: strict
+        environment-file: environment-dev.yml
+        use-only-tar-bz2: true
+
+    # Runs the Makefile at respository base directory (dpug/Makefile)
+    - name: Build notebooks & html
+      run: make -j8 all
+    
+    # On push to main: publish built site to gh-pages branch
+    # if make step is successful, then all notebooks are executable in developer environment
+    #   meaning we can publish both participant & _site folders to their respective branches
+    #   without too much worry
+    - name: Publish gh-pages
+      uses: peaceiris/actions-gh-pages@v3
+      if: ${{ (github.event_name == 'push') && (github.ref == 'refs/heads/main') && github.repository == 'criddler' }}
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: gh-pages
+        publish_dir: ./_build/_site
+  
+    # On push to main: push participant build folder to branch
+    - name: Push participant branch
+      uses: s0/git-publish-subdir-action@develop
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'criddler' }}
+      env:
+        REPO: self
+        BRANCH: participant
+        FOLDER: ./_build/participant
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+        MESSAGE: "Build: ({sha}) {msg}"

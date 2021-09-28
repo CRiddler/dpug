@@ -1,0 +1,9 @@
+Type: Jupyter Notebook Extension
+Name: DPUG workshop
+Section: tree
+Description: Adds DPUG workshop as an option under "New" on the tree menu
+tags:
+- markdown
+- template
+Main: main.js
+Compatibility: 5.x, 6.x

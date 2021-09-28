@@ -1,0 +1,16 @@
+root: index
+entries:
+- file: get_started/index
+  title: Get started
+  entries:
+  - glob: get_started/*
+- file: series/index
+  title: Series
+  # entries:
+  # - glob: 01_series/*  # no series are available just yet
+- file: workshops/index
+  title: Workshops
+  entries:
+  - glob: workshops/*
+- file: people
+  title: People
