@@ -1,7 +1,7 @@
 ---
 dpug:
-  author: Cameron Riddell
-  date: '2021-07-20'
+  author: FirstName LastName
+  date: 'yyyy-mm-dd'
 jupytext:
   formats: md:myst
   notebook_metadata_filter: dpug,rise
