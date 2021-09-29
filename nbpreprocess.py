@@ -19,3 +19,17 @@ class NbSphinxRST(nbsphinx.Exporter):
         self.register_preprocessor(
             RemoveSlideShowNotesCells(config=config), enabled=True
         )
+
+    def from_notebook_node(self, nb, resources=None, **kw):
+        rststr, resource = super().from_notebook_node(nb=nb, resources=resources, **kw)
+
+        # Inject dpug metadata variables from notebook into rst representation
+        if "dpug" in getattr(nb, "metadata", {}):
+            dpug_meta = nb.metadata["dpug"]
+            author_str = "*Authored by: {author}, on {date}*\n".format(**dpug_meta)
+
+            rststr = rststr.split("\n", maxsplit=3)
+            rststr.insert(2, author_str)
+            rststr = "\n".join(rststr)
+
+        return rststr, resource
