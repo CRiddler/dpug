@@ -8,6 +8,6 @@
     {% set binder_path = pagename + ".ipynb" %}
 {% endif %}
 
-<a href="{{ binder_base }}?filepath={{ binder_path.rstrip('/') }}" target="_blank">
+<a href="{{ binder_base }}?labpath={{ binder_path.rstrip('/') }}" target="_blank">
     <img src={{ binder_badge }} alt="Launch Binder"></img>
 </a>
