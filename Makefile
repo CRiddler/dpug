@@ -4,15 +4,15 @@
 #   notebooks/           -> Raw notebooks converted from .md file. No preprocessing done.
 #
 # 	participant/
-#		01_workshops/    -> Preprocessed notebooks, prepped for participant use
-#		02_series/       -> Preprocessed notebooks, prepped for participant use
+#		workshops/       -> Preprocessed notebooks, prepped for participant use
+#		series/          -> Preprocessed notebooks, prepped for participant use
 #		- notebooks are run through Exporter.preprocessors to remove content
 #			participants/website don't need (e.g. "speaker note" cells)
 #		envrionment.yml  -> Abbreviated version of environment-dev.yml
+#								see scripts/generate_env_from_dev.py
 # 
 #   site/
 #		- contains preprocessed & executed .rst versions of notebooks ready for sphinx-build
-#
 #		- all other files rsync'd in from {repo_home}/unconverted
 #			  (taking care to not sync the aforementioned notebooks)
 #
@@ -22,8 +22,8 @@
 ##########################################
 
 SOURCE_DIR     = unconverted
-SERIES_DIR     = 01_series
-WORKSHOP_DIR   = 02_workshops
+SERIES_DIR     = series
+WORKSHOP_DIR   = workshops
 
 # FIND_ARGS      = -name "index.md" -type f -prune -o -name "*.md" -print
 # SOURCE_MD = $(shell find "$(SOURCE_DIR)/$(SERIES_DIR)" "$(SOURCE_DIR)/$(WORKSHOP_DIR)" $(FIND_ARGS))
