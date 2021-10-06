@@ -140,6 +140,9 @@ html_context = {
     # For use binder button in "_templates/binder-button.html"
     "binder_url": "https://mybinder.org/v2/gh",
     "binder_branch": "participant",
+    "edit_page_url_template": "https://github.com/{{ github_user }}/"
+    + "{{ github_repo }}/edit/{{ github_version }}"  # noqa: W503
+    + "/{{ doc_path }}{{ file_name.replace('.rst', '.md') }}",  # noqa: W503
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
