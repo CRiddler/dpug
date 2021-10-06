@@ -1,3 +1,35 @@
+# Developer Set up:
+## Pre-Reqs
+* `git`
+* `conda` or `mamba`
+* A bash shell
+
+## Steps
+* `git clone` the repo
+* `bash -i scripts/setup.sh`
+  * installs "dpug-dev" environment from envrionment-dev.yml
+  * installs dpug jupyter notebook extension (NOT a jupyter lab extension)
+  * installs pre-commit hooks
+* Makefile commands (also see `make help`)
+  * `all`:           builds both participant & html files for web
+  * `participant`:   builds ipynb files for participants
+  * `html`:          runs sphinx-build on _build/site to generate files for _build/_site/index.html
+  * `serve`:         runs a local server pointed at `_build/_site` for testing
+  * `clean`:         removes _build completely
+  * `clean-html`:    removes output of sphinx-build `_build/_site`
+
+
+# TODO:
+- implement watchdog/inotify for makefile when using `make serve`
+  - utilize jupyter-cache to allow for faster remakes of changed markdown notebooks?
+- implement "dpug" -> "status": ["draft", "publish"] notebook metadata
+  - "draft": notebooks are built via the makefile, however they are removed from final
+      output, to prevent them from being pushed to the participant & gh-pages branches
+  - "publish": same as draft, but notebooks are not removed prior to deployment.
+- Fix admonition support, may need to refactor build process for this
+- requirements-dev.txt for developers who use some other env manager? Can synchronize with pandas `scripts/gen_pip_from_conda.py` pre-commit hook
+- Move all of the text below this todo list to appropriate locations
+
 ## Workshop Conceptual Format:
 - Topics should aim to bridge the gap between beginner and intermediate programmer
 - Try to answer the questions:
