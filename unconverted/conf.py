@@ -114,7 +114,7 @@ html_logo = "_static/images/logo.png"
 html_theme_options = {
     "external_links": [
         {
-            "url": "https://datalab.ucdavis.edu/davis-python-users-group//",
+            "url": "https://datalab.ucdavis.edu/davis-python-users-group/",
             "name": "DataLab",
         }
     ],
