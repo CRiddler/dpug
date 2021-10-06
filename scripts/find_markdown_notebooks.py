@@ -5,14 +5,43 @@ import sys
 import yaml
 
 
-def has_yaml_frontmatter(path):
+def has_frontmatter(path):
+    """
+    Checks whether a given file has yaml-style frontmatter at the top of file.
+    Valid frontmatter must be enclodes by two sets of 3 hyphens:
+        ---
+        yaml: information
+        located: here
+        ---
+
+    Parameters
+    ----------
+    path: str | os.PathLike
+
+    Returns
+    -------
+    Boolean: bool
+        True if the file indicated by `path` has frontmatter at the top of the file.
+        False if the file does not have valid frontmatter at the top of the file.
+    """
     with open(path) as f:
         if f.readline().strip() != "---":
             return False
         return True
 
 
-def parse_yaml_frontmatter(path):
+def parse_frontmatter(path):
+    """Parses frontmatter from a file and returns a dictionary object
+
+    Parameters
+    ----------
+    path: str | os.PathLike
+
+    Returns
+    -------
+    yaml: dict
+        dictionary representation of yaml found in frontmatter
+    """
     buffer = io.StringIO()
     with open(path) as f:
         f.readline()  # skip frontmatter header of "---"
@@ -41,8 +70,9 @@ if __name__ == "__main__":
     for path in args.source_path.rglob(glob_pat):
         if ".ipynb_checkpoints" in path.parts:
             continue
-        if has_yaml_frontmatter(path):
-            header = parse_yaml_frontmatter(path)
+
+        if has_frontmatter(path):
+            header = parse_frontmatter(path)
             if "kernelspec" in header:
                 markdown_notebook_paths.append(path.as_posix())
 

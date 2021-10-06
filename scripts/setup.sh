@@ -21,17 +21,9 @@ else
     echo "Please install conda and/or mamba and try again; pip install not supported yet" 1>&2
     exit 1
 
-    # pip setup details (untested)
-    # TODO: ensure some type of virtual env is used?
-    
-    # reconfigure scripts/generate_pip_deps_from_conda.py from Pandas github as a pre-commit
-    # This will ensure that environment.yml is synced with requirements.txt on commit
-    # pip install -r requirements-dev.txt
-
-    # install jupyter extensions (conda does this automatically)
-    # jupyter contrib nbextension install all --sys-prefix
-
-    # TODO: install ruby-devkit (or install ruby + compilers?)
+    # TODO: 
+    #   sync requirements-dev.txt with environment-dev.yml using script from pandas
+    #   hook into pre-commit to ensure environments are always syncronized.
 fi
 
 # This breaks unless script is executed with -i option `bash -i setup.sh`
