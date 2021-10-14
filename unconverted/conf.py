@@ -66,6 +66,12 @@ myst_update_mathjax = False
 # URI schemes that will be recognised as external URLs in Markdown links
 myst_url_schemes = ["mailto", "http", "https"]
 
+# -- myst_nb/jupyter_cache configuration --------------------------------
+jupyter_execute_notebooks = "cache"
+execution_excludepatterns = []
+execution_in_temp = False
+execution_allow_errors = False
+
 # -- sphinx_external_toc configuration ----------------------------------
 external_toc_path = "_toc.yml"
 external_toc_exclude_missing = False
