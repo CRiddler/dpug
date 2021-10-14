@@ -1,8 +1,6 @@
 ##########################################
 # Build folder output:
 # _build/
-#   notebooks/           -> Raw notebooks converted from .md file. No preprocessing done.
-#
 # 	participant/
 #		workshops/       -> Preprocessed notebooks, prepped for participant use
 #		series/          -> Preprocessed notebooks, prepped for participant use
@@ -10,104 +8,73 @@
 #			participants/website don't need (e.g. "speaker note" cells)
 #		envrionment.yml  -> Abbreviated version of environment-dev.yml
 #								see scripts/generate_env_from_dev.py
-# 
-#   site/
-#		- contains preprocessed & executed .rst versions of notebooks ready for sphinx-build
-#		- all other files rsync'd in from {repo_home}/unconverted
-#			  (taking care to not sync the aforementioned notebooks)
 #
-#   _site/			     -> output of sphinx-build on site/
+#   html/			     -> output of sphinx-build on site/
 #		- finalized output to push to gh-pages branch
 #
 ##########################################
 
 SOURCE_DIR     = unconverted
-SERIES_DIR     = series
-WORKSHOP_DIR   = workshops
+BUILD_DIR      = _build
 
-# FIND_ARGS      = -name "index.md" -type f -prune -o -name "*.md" -print
-# SOURCE_MD = $(shell find "$(SOURCE_DIR)/$(SERIES_DIR)" "$(SOURCE_DIR)/$(WORKSHOP_DIR)" $(FIND_ARGS))
-# Only run markdown notebook files through jupyter nbconvert to speed up build
-SOURCE_MD = $(shell python scripts/find_markdown_notebooks.py $(SOURCE_DIR))
-RSYNC_EXCLUDE_SOURCES = $(addprefix --exclude ,$(subst $(SOURCE_DIR)/,,$(SOURCE_MD)))
-
-BUILD_DIR         = _build
-NOTEBOOKS_DIR     = $(BUILD_DIR)/notebooks
+BUILT_HTML        = $(BUILD_DIR)/html
 BUILT_PARTICIPANT = $(BUILD_DIR)/participant
-PREPROC_SITE      = $(BUILD_DIR)/site
-BUILT_SITE        = $(BUILD_DIR)/_site
 
-rename_source = $(SOURCE_MD:$(SOURCE_DIR)/%.md=$(1)/%.$(2))
+MD_NOTEBOOKS = $(shell python scripts/find_markdown_notebooks.py $(SOURCE_DIR))
+PARTICIPANT_NOTEBOOKS = $(MD_NOTEBOOKS:$(SOURCE_DIR)/%.md=$(BUILT_PARTICIPANT)/%.ipynb)
 
-RAW_NOTEBOOKS         = $(call rename_source,$(NOTEBOOKS_DIR),ipynb)
-PARTICIPANT_NOTEBOOKS = $(call rename_source,$(BUILT_PARTICIPANT),ipynb)
-SITE_NOTEBOOKS        = $(call rename_source,$(PREPROC_SITE),rst)
 
-.PHONY: help all toc html serve clean clean-html
+.PHONY: help html participant clean clean-html clean-participant clean-cache serve
 
 help:
-	@echo $(SPHINXOPTS)
-	@echo ''
-	@echo 'usage: make [target]'
-	@echo ''
-	@echo 'target'
-	@echo '  all:           builds both participant & runs sphinx-build'
-	@echo '  participant:   builds ipynb files for participants'
-	@echo '  html:          runs sphinx-build on $(PREPROC_SITE) to generate files for $(BUILT_SITE)'
-	@echo '  serve:         runs a local server pointed at $(BUILT_SITE) for testing'
-	@echo '  clean:         removes $(BUILD_DIR) completely'
-	@echo '  clean-html:    removes output of sphinx-build $(BUILT_SITE)'
+	@echo 'Usage: make [target]'
+	@echo '  targets:'
+	@echo '    html               Builds html files for website'
+	@echo '    participant        Builds notebooks for participant & binder use'
+	@echo '    all                Builds both html & notebooks'
+	@echo '    clean              Removes $(BUILD_DIR) folder entirely'
+	@echo '    clean-html         Removes $(BUILT_HTML) folder'
+	@echo '    clean-participant  Removes $(BUILT_PARTICIPANT) folder'
+	@echo '    clean-cache        Removes $(BUILD_DIR)/{.jupyter_cache,jupyter_execute}'
+	@echo '                         These folders are automatically created when building'
+	@echo '                         site html and are used to speed up notebook executions'
+	@echo '    serve              Runs a simple local server that serves $(BUILT_HTML)'
+	@echo '                         while also watching $(SOURCE_DIR) to rebuild the site'
+	@echo '                         when a change in $(SOURCE_DIR) occurs'
 
+html:
+	@sphinx-build -WT -b html "$(SOURCE_DIR)" "$(BUILT_HTML)"
 
-# target to build everything
-all: participant html
-
-notebooks: $(RAW_NOTEBOOKS)
-
-# target for building participant branch
 participant: $(PARTICIPANT_NOTEBOOKS)
-	@mkdir -p "$(BUILT_PARTICIPANT)"
-	@echo "creating participant environment.yml"
-	@python scripts/generate_env_from_dev.py --output $(BUILT_PARTICIPANT)
+	@mkdir -p "$(BUILD_DIR)/participant"
+	@echo "creating environment.yml"
+	@python scripts/generate_env_from_dev.py --output "$(BUILD_DIR)/participant"
 
-html: $(SITE_NOTEBOOKS)
-	@echo "syncing $(SOURCE_DIR)/ to $(PREPROC_SITE)/"
-	@rsync -ra --exclude .ipynb_checkpoints $(RSYNC_EXCLUDE_SOURCES) "$(SOURCE_DIR)/" "$(PREPROC_SITE)"
-
-	@sphinx-build -Wnv "$(PREPROC_SITE)" "$(BUILT_SITE)"
-
-# use `tail` to log file name + file contents in {BUILT_SITE}/reports/ (if that folder exists)
-	@[ -d "$(BUILT_SITE)/reports" ] && tail -v -n +1 "$(BUILT_SITE)"/reports/*.log || echo ""
-	
-serve:
-	python scripts/serve.py --static-path="$(BUILT_SITE)"
+all: html participant
 
 clean:
-	@rm -rf $(BUILD_DIR)
+	@rm -rf "$(BUILD_DIR)"
 
 clean-html:
-	@rm -rf $(BUILT_SITE)
+	@rm -rf "$(BUILT_HTML)"
+
+clean-participant:
+	@rm -rf "$(BUILT_PARTICIPANT)"
+
+clean-cache:
+	@rm -rf "$(BUILD_DIR)/.jupyter_cache" "$(BUILD_DIR)/jupyter_execute"
+
+serve:
+	@sphinx-autobuild "$(SOURCE_DIR)" "$(BUILD_DIR)/html"
 
 
-$(RAW_NOTEBOOKS): $(NOTEBOOKS_DIR)/%.ipynb: $(SOURCE_DIR)/%.md
+$(PARTICIPANT_NOTEBOOKS): $(BUILT_PARTICIPANT)/%.ipynb: $(SOURCE_DIR)/%.md
 	@mkdir -p $(dir $@)
-	@echo "[jupytext] $< -> $*.ipynb"
-	@jupytext $< --to notebook --quiet --output $@
-
-# {SRC_DIR}/**.md -> {BUILT_WORKSHOP_DIR}/**.ipynb
-$(PARTICIPANT_NOTEBOOKS): $(BUILT_PARTICIPANT)/%.ipynb: $(NOTEBOOKS_DIR)/%.ipynb
-	@mkdir -p $(dir $@)
-	@echo "[nbconvert] (participant) Preprocessing $*.ipynb"
-	@jupyter nbconvert $< \
+	@jupytext "$<" \
 		--to notebook \
-		--output-dir $(dir $@) \
-		--Exporter.preprocessors nbpreprocess.RemoveSlideShowNotesCells
+		--output "$@"
 
-# {BUILT_NOTEBOOK_DIR}/**.ipynb -> {BUILT_HTML_DIR}/**.html
-$(SITE_NOTEBOOKS): $(PREPROC_SITE)/%.rst: $(NOTEBOOKS_DIR)/%.ipynb
-	@mkdir -p $(dir $@)
-	@echo "[nbconvert] (website) Preprocessing $*.rst"
-	@jupyter nbconvert $< \
-		--to nbpreprocess.NbSphinxRST \
-		--output-dir $(dir $@) \
-		--execute
+	@jupyter nbconvert $@ \
+		--to notebook \
+		--inplace     \
+		--Exporter.preprocessors nbpreprocess.RemoveSlideShowNotesCells
