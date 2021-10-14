@@ -33,34 +33,26 @@ version = pydata_sphinx_theme.__version__.replace("dev0", "")
 # ones.
 
 extensions = [
-    "myst_parser",  # renders markdown -> html
-    "nbsphinx",  # renders ipynb -> html
+    "myst_nb",
     "sphinx_copybutton",
     "sphinx_external_toc",
     "sphinx_panels",
     "sphinx_togglebutton",
 ]
 
-# -- nbsphinx configuration ----------------------------------------------
-nbsphinx_execute = "auto"
-nbsphinx_execute_arguments = [
-    "--InlineBackend.figure_formats={'svg', 'pdf'}",
-    "--InlineBackend.rc=figure.dpi=96",
-]
-nbsphinx_prolog = """
-.. raw:: html
-
-    {{ env }}
-
-"""
+# -- myst_nb/jupyter_cache configuration --------------------------------
+jupyter_execute_notebooks = "cache"
+execution_excludepatterns = []
+execution_in_temp = False
+execution_allow_errors = False
 
 # -- myst specific extensions --------------------------------------------
 # https://myst-parser.readthedocs.io/en/latest/syntax/optional.html
 myst_enable_extensions = [
     # "amsmath",
-    # "colon_fence",
+    "colon_fence",
     # "deflist",
-    # "dollarmath",
+    "dollarmath",
     # "html_admonition",
     # "html_image",
     # "linkify",

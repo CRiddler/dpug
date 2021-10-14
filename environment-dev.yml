@@ -22,8 +22,7 @@ dependencies:
   - pyyaml=5.4.1
 
   # sphinx extensions
-  - myst-parser=0.15.2
-  - nbsphinx=0.8.7
+  - myst-nb=0.13.0
   - sphinx-panels=0.6.0
   - sphinx-copybutton=0.4.0
   - sphinx-external-toc=0.2.3
