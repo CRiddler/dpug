@@ -14,6 +14,7 @@
 #
 ##########################################
 
+SPHINX_OPTS = -WT -b html
 SOURCE_DIR     = unconverted
 BUILD_DIR      = _build
 
@@ -43,7 +44,7 @@ help:
 	@echo '                         when a change in $(SOURCE_DIR) occurs'
 
 html:
-	@sphinx-build -WT -b html "$(SOURCE_DIR)" "$(BUILT_HTML)"
+	@sphinx-build $(SPHINX_OPTS) "$(SOURCE_DIR)" "$(BUILT_HTML)"
 
 participant: $(PARTICIPANT_NOTEBOOKS)
 	@mkdir -p "$(BUILD_DIR)/participant"
@@ -65,7 +66,7 @@ clean-cache:
 	@rm -rf "$(BUILD_DIR)/.jupyter_cache" "$(BUILD_DIR)/jupyter_execute"
 
 serve:
-	@sphinx-autobuild "$(SOURCE_DIR)" "$(BUILD_DIR)/html"
+	@sphinx-autobuild $(SPHINX_OPTS) "$(SOURCE_DIR)" "$(BUILD_DIR)/html"
 
 
 $(PARTICIPANT_NOTEBOOKS): $(BUILT_PARTICIPANT)/%.ipynb: $(SOURCE_DIR)/%.md
