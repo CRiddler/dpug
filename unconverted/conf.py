@@ -82,6 +82,7 @@ language = "en"
 
 autosummary_generate = True
 
+# -- Build Options ------------------------------------------------
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
@@ -90,7 +91,7 @@ templates_path = ["_templates"]
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", ".ipynb_checkpoints"]
 
-
+# -- Sidebar composition ------------------------------------------------
 html_sidebar_default = ["navbar-logo", "search-field", "sidebar-nav-bs"]
 html_sidebar_binder = ["navbar-logo", "search-field", "binder-button", "sidebar-nav-bs"]
 html_sidebars = {
