@@ -12,8 +12,5 @@ We have no TAs - just mutual support from folks working on/in python and related
 
 
 ## Now what?
-If this is your firs time participating in a D-PUG workshop/series, please see the
-[Get Started](get_started/index.md)
-
-If this is not your first time, please navigate to the appropriate [workshop](workshops/index.md)
-or [series](series/index.md) that you are participating in. 
+Please navigate to the appropriate [workshop](workshops/index.md)
+or [series](series/index.md) that you are participating in.

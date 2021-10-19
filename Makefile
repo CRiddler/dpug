@@ -14,7 +14,7 @@
 #
 ##########################################
 
-SPHINX_OPTS = -WT -b html
+SPHINX_OPTS = -T -b html
 SOURCE_DIR     = unconverted
 BUILD_DIR      = _build
 

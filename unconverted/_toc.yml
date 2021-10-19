@@ -1,9 +1,9 @@
 root: index
 entries:
-- file: get_started/index
-  title: Get started
-  entries:
-  - glob: get_started/*
+# - file: get_started/index
+  # title: Get started
+  # entries:
+  # - glob: get_started/*
 - file: series/index
   title: Series
   # entries:
@@ -12,5 +12,5 @@ entries:
   title: Workshops
   entries:
   - glob: workshops/*
-- file: people
-  title: People
+# - file: people
+#   title: People
