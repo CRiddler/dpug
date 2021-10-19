@@ -1,0 +1,39 @@
+/* Resize logo properly for sidebar display */
+.bd-sidebar .navbar-brand {
+    height: auto;
+}
+.bd-sidebar .navbar-brand img {
+    max-width: 100%;
+    height: auto;
+    width: auto;
+}
+
+/* Change top bar background color; hacky b/c this element has bg-light bootstrap class */
+#navbar-main {
+    background-color: rgb(0, 75, 133)!important;
+}
+
+#navbar-main .nav-link {
+    /* Force top nav bar font color to NOT change on "active" */
+    color: rgba(var(--pst-color-navbar-link), 1);
+    /* Add slight spacing to letters on top navbar */
+    letter-spacing: 0.0625rem;
+}
+
+/* Change active/hovered buttons on top navbar */
+#navbar-main .nav-link:hover,
+#navbar-main .current .nav-link {
+    /* Force top nav bar font color to not change on "active" */
+    color: white;
+    border-bottom: 2px solid rgba(var(--pst-color-active-navigation), 1);
+}
+
+#navbar-start .title {
+    color: rgba(var(--pst-color-navbar-link), 1);
+}
+
+i.fa-github:before {
+    color: white;
+    font-size: 2rem;
+ }
+ 
