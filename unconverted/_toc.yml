@@ -6,8 +6,10 @@ entries:
   # - glob: get_started/*
 - file: series/index
   title: Series
-  # entries:
+  entries:
   # - glob: 01_series/*  # no series are available just yet
+  - url: https://ucdavisdatalab.github.io/workshop_python_basics/chapters/index.html
+    title: Python Basics
 - file: workshops/index
   title: Workshops
   entries:
