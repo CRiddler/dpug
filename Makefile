@@ -47,9 +47,10 @@ html:
 	@sphinx-build $(SPHINX_OPTS) "$(SOURCE_DIR)" "$(BUILT_HTML)"
 
 participant: $(PARTICIPANT_NOTEBOOKS)
-	@mkdir -p "$(BUILD_DIR)/participant"
+	@mkdir -p "$(BUILT_PARTICIPANT)"
 	@echo "creating environment.yml"
-	@python scripts/generate_env_from_dev.py --output "$(BUILD_DIR)/participant"
+	@python scripts/generate_env_from_dev.py --output "$(BUILT_PARTICIPANT)"
+	@cp -r unconverted/_static "$(BUILT_PARTICIPANT)"
 
 all: html participant
 
