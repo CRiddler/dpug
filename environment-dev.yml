@@ -9,16 +9,23 @@ dependencies:
   - ipykernel=6.4.1
   - nbconvert=5.6.1
   - notebook=6.4.4
+  - jupyterlab=3.2.0
 
   ## Developer packages, packages below this comment will be ignored when
   # generating 'environment.yml' (see scripts/generate_env_from_dev.py)
   # for participant envrironment
-
-  - pydata-sphinx-theme=0.6.3
+  
+  # jupyterlab plugins
+  - jupyterlab-git
+  - jupyterlab-spellchecker
   - jupytext=1.13.0
+
+  # pin jupyter client
   - jupyter_client=6.1.12
+
+  # sphinx tools
+  - pydata-sphinx-theme=0.6.3
   - pandoc=2.14.2
-  - rise=5.7.1
   - pyyaml=5.4.1
 
   # sphinx extensions
