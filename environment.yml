@@ -8,3 +8,4 @@ dependencies:
 - ipykernel=6.4.1
 - nbconvert=5.6.1
 - notebook=6.4.4
+- jupyterlab=3.2.0
