@@ -55,7 +55,7 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_branch: gh-pages
-        publish_dir: ./_build/_site
+        publish_dir: ./_build/html
   
     # On push to main: push participant build folder to branch
     - name: Push participant branch
